@@ -2,6 +2,7 @@ package natsjobs
 
 import (
 	"context"
+	stderr "errors"
 	"maps"
 	"sync/atomic"
 	"time"
@@ -167,8 +168,7 @@ func (i *Item) Requeue(headers map[string][]string, _ int) error {
 		if !i.Options.AutoAck {
 			errNak := i.Options.nak()
 			if errNak != nil {
-				return errors.E(errNak, "nack")
-				//return stderr.Join(err, errNak)
+				return stderr.Join(err, errNak)
 			}
 		}
 
