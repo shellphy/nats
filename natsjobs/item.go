@@ -2,7 +2,6 @@ package natsjobs
 
 import (
 	"context"
-	stderr "errors"
 	"maps"
 	"sync/atomic"
 	"time"
@@ -156,7 +155,6 @@ func (i *Item) NackWithOptions(requeue bool, delay int) error {
 }
 
 func (i *Item) Requeue(headers map[string][]string, _ int) error {
-	return nil
 	if atomic.LoadUint64(i.Options.stopped) == 1 {
 		return errors.Str("failed to acknowledge the JOB, the pipeline is probably stopped")
 	}
@@ -169,7 +167,8 @@ func (i *Item) Requeue(headers map[string][]string, _ int) error {
 		if !i.Options.AutoAck {
 			errNak := i.Options.nak()
 			if errNak != nil {
-				return stderr.Join(err, errNak)
+				return nil
+				//return stderr.Join(err, errNak)
 			}
 		}
 
