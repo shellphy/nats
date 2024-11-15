@@ -259,6 +259,7 @@ func (c *Driver) Push(ctx context.Context, job jobs.Message) error {
 	if err != nil {
 		return errors.E(op, err)
 	}
+	c.log.Error(fmt.Sprintf("%v", data))
 
 	_, err = c.jetstream.PublishMsg(ctx, &nats.Msg{
 		Data:    data,
