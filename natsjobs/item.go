@@ -156,6 +156,7 @@ func (i *Item) NackWithOptions(requeue bool, delay int) error {
 }
 
 func (i *Item) Requeue(headers map[string][]string, _ int) error {
+	return errors.Str("ttt")
 	if atomic.LoadUint64(i.Options.stopped) == 1 {
 		return errors.Str("failed to acknowledge the JOB, the pipeline is probably stopped")
 	}
