@@ -28,5 +28,5 @@ func (c *Driver) unpack(data []byte, item *Item) {
 		}
 		c.log.Debug("raw payload", zap.String("assigned ID", item.Ident))
 	}
-	c.log.Error(fmt.Sprintf("%v", item))
+	c.log.Error(fmt.Sprintf("%v", item.headers))
 }
