@@ -2,7 +2,6 @@ package natsjobs
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -83,7 +82,6 @@ func (c *Driver) listenerStart() { //nolint:gocognit
 				item := &Item{}
 				c.unpack(m.Data(), item)
 				item.headers = m.Headers()
-				c.log.Error(fmt.Sprintf("%v", item.headers))
 
 				ctx := c.prop.Extract(context.Background(), propagation.HeaderCarrier(item.headers))
 				ctx, span := c.tracer.Tracer(tracerName).Start(ctx, "nats_listener")
