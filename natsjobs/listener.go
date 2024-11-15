@@ -2,6 +2,7 @@ package natsjobs
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -29,6 +30,7 @@ func (c *Driver) listenerInit() error {
 	}
 
 	consume, err := cons.Consume(func(msg jetstream.Msg) {
+		c.log.Error(fmt.Sprintf("%v", msg))
 		c.msgCh <- msg
 	})
 
