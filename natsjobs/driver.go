@@ -2,7 +2,6 @@ package natsjobs
 
 import (
 	"context"
-	"fmt"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -249,17 +248,13 @@ func (c *Driver) Push(ctx context.Context, job jobs.Message) error {
 		return errors.E(op, errors.Str("nats doesn't support delayed messages, see: https://github.com/nats-io/nats-streaming-server/issues/324"))
 	}
 
-	c.log.Error(fmt.Sprintf("%v", job.Headers()))
 	j := fromJob(job)
-	c.log.Error(fmt.Sprintf("%v", j.headers))
-
 	c.prop.Inject(ctx, propagation.HeaderCarrier(j.headers))
 
-	data, err := json.Marshal(j)
+	data, err := j.MarshalJSON()
 	if err != nil {
 		return errors.E(op, err)
 	}
-	c.log.Error(fmt.Sprintf("%v", data))
 
 	_, err = c.jetstream.PublishMsg(ctx, &nats.Msg{
 		Data:    data,

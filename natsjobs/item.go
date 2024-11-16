@@ -80,6 +80,22 @@ func (i *Item) Body() []byte {
 	return i.Payload
 }
 
+func (i *Item) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		Job     string              `json:"job"`
+		Ident   string              `json:"id"`
+		Payload []byte              `json:"payload"`
+		Headers map[string][]string `json:"headers"`
+		Options *Options            `json:"options,omitempty"`
+	}{
+		Job:     i.Job,
+		Ident:   i.Ident,
+		Payload: i.Payload,
+		Headers: i.headers,
+		Options: i.Options,
+	})
+}
+
 // Context packs job context (job, id) into binary payload.
 func (i *Item) Context() ([]byte, error) {
 	ctx, err := json.Marshal(
@@ -87,7 +103,7 @@ func (i *Item) Context() ([]byte, error) {
 			ID       string              `json:"id"`
 			Job      string              `json:"job"`
 			Driver   string              `json:"driver"`
-			Headers  map[string][]string `json:"headers"`
+			Headers  map[string][]string `json:"Headers"`
 			Pipeline string              `json:"pipeline"`
 			Queue    string              `json:"queue,omitempty"`
 		}{
