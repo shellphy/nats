@@ -145,6 +145,7 @@ func (c *Driver) listenerStart() { //nolint:gocognit
 				item.headers[subjectHeaderKey] = []string{m.Subject()}
 
 				c.prop.Inject(ctx, propagation.HeaderCarrier(item.headers))
+				c.log.Error(fmt.Sprintf("%v", item))
 				c.queue.Insert(item)
 				span.End()
 
