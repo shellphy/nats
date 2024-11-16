@@ -81,7 +81,6 @@ func (c *Driver) listenerStart() { //nolint:gocognit
 				}
 
 				item := &Item{}
-				c.log.Error(fmt.Sprintf("%v", m.Data()))
 				c.unpack(m.Data(), item)
 				c.log.Error(fmt.Sprintf("%v", item.headers))
 

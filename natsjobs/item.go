@@ -96,6 +96,28 @@ func (i *Item) MarshalJSON() ([]byte, error) {
 	})
 }
 
+func (i *Item) UnmarshalJSON(data []byte) error {
+	aux := struct {
+		Job     string              `json:"job"`
+		Ident   string              `json:"id"`
+		Payload []byte              `json:"payload"`
+		Headers map[string][]string `json:"headers"`
+		Options *Options            `json:"options,omitempty"`
+	}{}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	i.Job = aux.Job
+	i.Ident = aux.Ident
+	i.Payload = aux.Payload
+	i.headers = aux.Headers
+	i.Options = aux.Options
+
+	return nil
+}
+
 // Context packs job context (job, id) into binary payload.
 func (i *Item) Context() ([]byte, error) {
 	ctx, err := json.Marshal(

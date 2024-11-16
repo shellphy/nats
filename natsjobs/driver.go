@@ -2,6 +2,7 @@ package natsjobs
 
 import (
 	"context"
+	"fmt"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -251,6 +252,7 @@ func (c *Driver) Push(ctx context.Context, job jobs.Message) error {
 	j := fromJob(job)
 	c.prop.Inject(ctx, propagation.HeaderCarrier(j.headers))
 
+	c.log.Error(fmt.Sprintf("%v", j.headers))
 	data, err := j.MarshalJSON()
 	if err != nil {
 		return errors.E(op, err)
