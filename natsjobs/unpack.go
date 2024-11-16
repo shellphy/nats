@@ -2,6 +2,7 @@ package natsjobs
 
 import (
 	"fmt"
+	"github.com/goccy/go-json"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
@@ -27,5 +28,10 @@ func (c *Driver) unpack(data []byte, item *Item) {
 		}
 		c.log.Debug("raw payload", zap.String("assigned ID", item.Ident))
 	}
+	str, err := json.Marshal(item)
+	if err != nil {
+		c.log.Error(err.Error())
+	}
+	c.log.Error(string(str))
 	c.log.Error(fmt.Sprintf("%v, %v, %v", item.headers, item.Options, item.Payload))
 }
