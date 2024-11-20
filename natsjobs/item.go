@@ -180,6 +180,7 @@ func (i *Item) Nack() error {
 }
 
 func (i *Item) NackWithOptions(requeue bool, delay int) error {
+	i.stopHeartbeat()
 	if atomic.LoadUint64(i.Options.stopped) == 1 {
 		return errors.Str("failed to NACK the JOB, the pipeline is probably stopped")
 	}
@@ -194,6 +195,7 @@ func (i *Item) NackWithOptions(requeue bool, delay int) error {
 }
 
 func (i *Item) Requeue(headers map[string][]string, _ int) error {
+	i.stopHeartbeat()
 	if atomic.LoadUint64(i.Options.stopped) == 1 {
 		return errors.Str("failed to acknowledge the JOB, the pipeline is probably stopped")
 	}
